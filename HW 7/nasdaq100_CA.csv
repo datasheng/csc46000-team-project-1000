@@ -1,0 +1,39 @@
+symbol,name,headQuarter,dateFirstAdded,cik,founded
+AAPL,Apple Inc.,"Cupertino, CA",,320193,1976-04-01
+ABNB,Airbnb,"San Francisco, CA",,1559720,2008-08-01
+ADBE,Adobe Inc.,"San Jose, CA",,796343,1982-12-01
+ADSK,Autodesk,"San Rafael, CA",,769397,1982-01-30
+AMAT,Applied Materials,"Santa Clara, CA",,6951,1967-11-10
+AMD,Advanced Micro Devices Inc.,"Santa Clara, CA",,2488,1969-05-01
+AMGN,Amgen,"Thousand Oaks, CA",,318154,1980-04-08
+ATVI,Activision Blizzard,"Santa Monica, CA",,718877,2008-07-10
+AVGO,Broadcom Inc.,"San Jose, CA",,1730168,1961-01-01
+CDNS,Cadence Design Systems,"San Jose, CA",,813672,1988-01-01
+CSCO,Cisco,"San Jose, CA",,858877,1984-12-10
+DXCM,DexCom,"San Diego, CA",,1093557,1999-01-01
+EA,Electronic Arts,"Redwood City, CA",,712515,1982-05-27
+EBAY,eBay,"San Jose, CA",,1065088,1995-09-03
+ENPH,Enphase Energy,"Fremont, CA",,1463101,2006-01-01
+FTNT,Fortinet,"Sunnyvale, CA",,1262039,2000-01-01
+GILD,Gilead Sciences,"Foster City, CA",,882095,1987-06-22
+GOOG,Alphabet Inc. (Class C),"Mountain View, CA",,1652044,2015-10-02
+GOOGL,Alphabet Inc. (Class A),"Mountain View, CA",,1652044,2015-10-02
+ILMN,"Illumina, Inc.","San Diego, CA",,1110803,1998-01-01
+INTC,Intel,"Santa Clara, CA",,50863,1968-07-18
+INTU,Intuit,"Mountain View, CA",,896878,1983-01-01
+ISRG,Intuitive Surgical,"Sunnyvale, CA",,1035267,1995-01-01
+KLAC,KLA Corporation,"Milpitas, CA",,319201,1997-01-01
+LCID,Lucid Motors,"Newark, CA",,1811210,2007-01-01
+LRCX,Lam Research,"Fremont, CA",,707549,1980-01-01
+META,Meta Platforms,"Menlo Park, CA",,1326801,2004-01-04
+MNST,Monster Beverage,"Corona, CA",,865752,1935-01-01
+NFLX,Netflix,"Los Gatos, CA",,1065280,1997-09-29
+NVDA,Nvidia,"Santa Clara, CA",,1045810,1993-04-05
+PANW,Palo Alto Networks,"Santa Clara, CA",,1327567,2005-01-01
+PYPL,PayPal,"San Jose, CA",,1633917,1998-12-01
+QCOM,Qualcomm,"San Diego, CA",,804328,1985-07-01
+ROST,Ross Stores,"Dublin, CA",,745732,2050-01-19
+SNPS,Synopsys,"Mountain View, CA",,883241,1986-01-01
+WDAY,"Workday, Inc.","Pleasanton, CA",,1327811,2005-03-01
+ZM,Zoom Video Communications,"San Jose, CA",,1585521,2011-04-21
+ZS,Zscaler,"San Jose, CA",,1713683,2007-01-01
