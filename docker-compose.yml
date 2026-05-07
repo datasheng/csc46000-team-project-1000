@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  weather-traffic-analysis:
+    build: .
+    container_name: weather-traffic-analysis
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/app
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - analysis-network
+
+  # Optional: Add a PostgreSQL database for storing results
+  postgres:
+    image: postgres:15-alpine
+    container_name: weather-traffic-db
+    environment:
+      POSTGRES_DB: weather_traffic
+      POSTGRES_USER: analyst
+      POSTGRES_PASSWORD: analysis123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - analysis-network
+    profiles:
+      - with-db
+
+volumes:
+  postgres_data:
+
+networks:
+  analysis-network:
+    driver: bridge
