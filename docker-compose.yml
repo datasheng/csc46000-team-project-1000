@@ -16,27 +16,24 @@ services:
     networks:
       - analysis-network
 
-  # Optional: Add a PostgreSQL database for storing results
-  postgres:
-    image: postgres:15-alpine
+  mysql:
+    image: mysql:8.0
     container_name: weather-traffic-db
     environment:
-      POSTGRES_DB: weather_traffic
-      POSTGRES_USER: analyst
-      POSTGRES_PASSWORD: analysis123
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: weather_traffic_db
+      MYSQL_USER: analyst
+      MYSQL_PASSWORD: analysis123
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
     restart: unless-stopped
     networks:
       - analysis-network
-    profiles:
-      - with-db
 
 volumes:
-  postgres_data:
+  mysql_data:
 
 networks:
   analysis-network:
