@@ -15,8 +15,8 @@ weather_url = "https://archive-api.open-meteo.com/v1/archive"
 weather_params = {
     "latitude": 40.7128,
     "longitude": -74.0060,
-    "start_date": "2023-01-01",
-    "end_date": "2023-12-31",
+    "start_date": "2024-01-01",
+    "end_date": "2024-12-31",
     "hourly": [
         "temperature_2m",
         "rain",
@@ -49,7 +49,7 @@ while True:
     traffic_params = {
         "$limit": limit,
         "$offset": offset,
-        "$where": "yr = 2023"
+        "$where": "yr = 2024"
     }
 
     traffic_response = requests.get(traffic_url, params=traffic_params)
