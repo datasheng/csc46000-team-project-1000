@@ -8,6 +8,15 @@ SELECT COUNT(*) AS total_rows
 FROM weather_traffic_data;
 
 -- Preview data
+SELECT 
+    COALESCE(borough, 'TOTAL') as borough,
+    COUNT(*) as total_rows,
+    ROUND(AVG(traffic_index_capped), 4) as avg_traffic_index,
+    SUM(CASE WHEN traffic_index IS NULL THEN 1 ELSE 0 END) as nulls
+FROM weather_traffic_data
+GROUP BY borough WITH ROLLUP
+ORDER BY total_rows ASC;
+
 SELECT *
 FROM weather_traffic_data
 LIMIT 10;
