@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 from sqlalchemy import create_engine
+import joblib
+from datetime import datetime
 
 # MySQL connection settings
 MYSQL_USER = "analyst"
@@ -181,3 +183,90 @@ merged_df.to_sql(
 )
 
 print(f"\nWrote {len(merged_df)} rows to MySQL table 'weather_traffic_data'")
+
+
+# live prediction for current hour
+
+# get current hour weather from forecast API
+now = datetime.now()
+current_hour = now.hour
+
+forecast_url = "https://api.open-meteo.com/v1/forecast"
+forecast_params = {
+    "latitude": 40.7128,
+    "longitude": -74.0060,
+    "hourly": ["temperature_2m", "rain", "snowfall"],
+    "timezone": "America/New_York",
+    "forecast_days": 1
+}
+forecast = requests.get(forecast_url, params=forecast_params).json()
+
+current_temp  = forecast["hourly"]["temperature_2m"][current_hour]
+current_rain  = forecast["hourly"]["rain"][current_hour]
+current_snow  = forecast["hourly"]["snowfall"][current_hour]
+
+# get previous hour avg volume from MySQL
+prev_hour = current_hour - 1 if current_hour > 0 else 23
+prev_vol_query = f"""
+    SELECT AVG(avg_vehicle_volume) as prev_volume
+    FROM weather_traffic_data
+    WHERE hour = {prev_hour}
+"""
+prev_volume = pd.read_sql(prev_vol_query, con=engine)["prev_volume"].values[0]
+
+# flags
+rush_hour  = 1 if (7 <= current_hour <= 9) or (16 <= current_hour <= 19) else 0
+is_weekend = 1 if datetime.now().weekday() >= 5 else 0
+
+# load saved model
+model_b = joblib.load("model_b.pkl")
+
+# predict
+features = pd.DataFrame([{
+    "rain":                  current_rain,
+    "temperature":           current_temp,
+    "snowfall":              current_snow,
+    "previous_hour_traffic": prev_volume,
+    "rush_hour":             rush_hour,
+    "is_weekend":            is_weekend
+}])
+
+predicted_volume = model_b.predict(features)[0]
+predicted_volume = max(0, predicted_volume)
+
+# congestion label
+def congestion_label(vol):
+    if vol < 50:   return "Low"
+    elif vol < 150: return "Moderate"
+    elif vol < 300: return "High"
+    else:           return "Severe"
+
+congestion = congestion_label(predicted_volume)
+
+# write to MySQL
+live_pred = pd.DataFrame([{
+    "timestamp":            now.strftime("%Y-%m-%d %H:%M:%S"),
+    "hour":                 current_hour,
+    "temperature":          current_temp,
+    "rain":                 current_rain,
+    "snowfall":             current_snow,
+    "rush_hour":            rush_hour,
+    "is_weekend":           is_weekend,
+    "prev_hour_volume":     round(prev_volume, 1),
+    "predicted_volume":     round(predicted_volume, 1),
+    "congestion_level":     congestion
+}])
+
+live_pred.to_sql(
+    "live_prediction",
+    con=engine,
+    if_exists="replace",
+    index=False
+)
+
+print(f"\nLIVE PREDICTION — {now.strftime('%Y-%m-%d %H:%M')}")
+print(f"  Temp: {current_temp}°C  Rain: {current_rain}mm  Snow: {current_snow}mm")
+print(f"  Rush hour: {'Yes' if rush_hour else 'No'}")
+print(f"  Prev hour volume: {prev_volume:.0f} vehicles")
+print(f"  Predicted volume: {predicted_volume:.0f} vehicles/hour")
+print(f"  Congestion level: {congestion}")
