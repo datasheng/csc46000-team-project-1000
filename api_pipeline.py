@@ -158,7 +158,7 @@ merged_df["traffic_index_capped"] = merged_df["traffic_index"].clip(upper=p99)
 print(f"\nCapped traffic_index at 99th percentile: {p99:.2f}")
 
 
-# quick sanity checks
+# quick checks
 total_possible_borough = 365 * 24 * 5
 coverage_pct = (len(merged_df) / total_possible_borough) * 100
 
