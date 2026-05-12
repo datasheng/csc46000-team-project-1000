@@ -1,0 +1,38 @@
+services:
+  weather-traffic-analysis:
+    build: .
+    container_name: weather-traffic-analysis
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/app
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - analysis-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: weather-traffic-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: weather_traffic_db
+      MYSQL_USER: analyst
+      MYSQL_PASSWORD: analysis123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - analysis-network
+
+volumes:
+  mysql_data:
+
+networks:
+  analysis-network:
+    driver: bridge
